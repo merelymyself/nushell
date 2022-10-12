@@ -559,3 +559,23 @@ fn list_ignores_ansi() {
         assert!(actual.err.is_empty());
     })
 }
+
+#[test]
+#[cfg(unix)]
+fn list_specifying_symlink_lists_the_symlink() {
+    Playground::setup("ls_test_ansi", |dirs, sandbox| {
+        sandbox.with_files(vec![
+            EmptyFile("linked.txt"),
+        ]);
+        sandbox.symlink("linked.txt", "symlink");
+
+        let actual = nu!(
+            cwd: dirs.test(), pipeline(
+            r#"
+                ls symlink | get type | first
+            "#
+        ));
+
+        assert_eq!(actual.out, "symlink");
+    })
+}

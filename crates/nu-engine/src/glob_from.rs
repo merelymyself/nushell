@@ -1,7 +1,7 @@
 use std::path::{Component, Path, PathBuf};
 
 use nu_glob::MatchOptions;
-use nu_path::{canonicalize_with, expand_path_with};
+use nu_path::expand_path_with;
 use nu_protocol::{ShellError, Span, Spanned};
 
 /// This function is like `nu_glob::glob` from the `glob` crate, except it is relative to a given cwd.
@@ -41,7 +41,8 @@ pub fn glob_from(
         }
         (Some(p), path)
     } else {
-        let path = if let Ok(p) = canonicalize_with(path, &cwd) {
+        let p = expand_path_with(path, &cwd);
+        let path = if p.exists() {
             p
         } else {
             return Err(ShellError::DirectoryNotFound(pattern.span, None));
