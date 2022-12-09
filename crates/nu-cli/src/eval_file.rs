@@ -1,4 +1,4 @@
-use crate::util::{eval_source, report_error};
+use crate::util::{eval_source, eval_source_with_early_return, report_error};
 use log::info;
 use log::trace;
 use miette::{IntoDiagnostic, Result};
@@ -112,7 +112,7 @@ pub fn evaluate_file(
         if !eval_source(engine_state, stack, args.as_bytes(), "<commandline>", input) {
             std::process::exit(1);
         }
-    } else if !eval_source(engine_state, stack, &file, file_path_str, input) {
+    } else if !eval_source_with_early_return(engine_state, stack, &file, file_path_str, input) {
         std::process::exit(1);
     }
 

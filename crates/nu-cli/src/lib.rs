@@ -24,7 +24,10 @@ pub use prompt::NushellPrompt;
 pub use repl::evaluate_repl;
 pub use repl::{eval_env_change_hook, eval_hook};
 pub use syntax_highlight::NuHighlighter;
-pub use util::{eval_source, gather_parent_env_vars, get_init_cwd, report_error, report_error_new};
+pub use util::{
+    eval_source, eval_source_with_early_return, gather_parent_env_vars, get_init_cwd, report_error,
+    report_error_new,
+};
 pub use validation::NuValidator;
 
 #[cfg(feature = "plugin")]
